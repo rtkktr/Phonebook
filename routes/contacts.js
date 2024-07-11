@@ -20,11 +20,12 @@ router.post('/create', upload.single('coverImage'), async (req, res) => {
         email: req.body.email,
         address: req.body.address,
         coverImageName: fileName,
+        createdUser: req.session.user._id
         // createdUser: req.user._id
     });
     // try {
         const newContact = await contact.save();
-        res.render(`/contacts/${newContact.id}`, { user: req.session.user });
+        res.redirect(`/contacts/${newContact.id}`);
     // } catch {
     //     if (contact.coverImageName != null) {
     //         removeContactCover(contact.coverImageName);
@@ -49,18 +50,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// DELETE contact
 router.delete('/:id', async (req, res) => {
   try {
-    const contact = await Contact.findByIdAndRemove(req.params.id);
+    const contact = await Contact.findByIdAndDelete(req.params.id);
     if (!contact) {
-      return res.status(404).send("Contact not found.", { user: req.session.user });
+      return res.status(404).send({ message: "Contact not found.", user: req.session.user });
     }
-    res.redirect('/contacts', { user: req.session.user }); // Redirect to contacts list or homepage
+    res.redirect('/contacts'); // No need to pass user here
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error deleting contact.", { user: req.session.user });
+    res.status(500).send({ message: "Error deleting contact.", user: req.session.user });
   }
 });
+
 
 // GET edit contact form
 router.get('/:id/edit', async (req, res) => {
@@ -97,7 +100,7 @@ router.put('/:id', upload.single('coverImage'), async (req, res) => {
     }
 
     await contact.save();
-    res.redirect(`/contacts/${contact._id}`, { user: req.session.user });
+    res.redirect(`/contacts/${contact._id}`);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error', { user: req.session.user });
@@ -105,7 +108,7 @@ router.put('/:id', upload.single('coverImage'), async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  let query = { createUser: req.session.user._id };
+  let query = { };
 
   if (req.query.q) {
     const searchQuery = req.query.q;

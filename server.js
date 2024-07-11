@@ -8,6 +8,7 @@ const expressLayouts = require('express-ejs-layouts');
 const app = express()
 const path = require('path')
 const multer = require('multer')
+const methodOverride = require('method-override');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'images')
@@ -26,6 +27,7 @@ dotenv.config();
 // Middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 app.use(session({
   secret: 'yourSecretKey',
   resave: false,
