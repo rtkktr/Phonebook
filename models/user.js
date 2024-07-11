@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const path = require('path')
-const coverImageBasePath = 'uploads/userCovers'
 
 const userSchema = new mongoose.Schema({
     fullname: {
@@ -18,21 +16,23 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    },
-    coverImageName: {
-        type: String,
-        required: true
-    },
+    }
 })
 
-userSchema.virtual('coverImagePath').get(function() {
-    console.log('Virtual getter called');
-    if (this.coverImageName != null) {
-        return path.join('/', coverImageBasePath, this.coverImageName)
+userSchema.statics.findByCredentials = async function (username, password) {
+    const user = await this.findOne({ username }).exec();
+
+    if (!user) {
+        return null;
     }
 
-    return null;
-})
+    const isMatch = user.password === password;
+
+    if (!isMatch) {
+        return null;
+    }
+
+    return user;
+};
 
 module.exports = mongoose.model('User', userSchema)
-module.exports.coverImageBasePath = coverImageBasePath

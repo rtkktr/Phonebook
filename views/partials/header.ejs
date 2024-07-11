@@ -1,0 +1,23 @@
+<!-- Header -->
+<header class="bg-light p-3">
+    <div class="container">
+        <div class="row">
+            <!-- Logo and Search Items (Left) -->
+            <div class="col-md-6">
+                <div class="d-flex align-items-center">
+                   
+                </div>
+            </div>
+            <!-- Login/Sign In/Sign Up (Right) -->
+            <div class="col-md-6 text-right">
+                <% if (!locals.user) { %>
+                    <button onclick="location.href='/users/signin'" class="btn btn-primary">Login</button>
+                    <button onclick="location.href='/users/signup'" class="btn btn-outline-primary ml-2">Sign Up</button>
+                <% } else { %>
+                    <button onclick="location.href='/users/profile'" class="btn btn-primary"><%= locals.user.username %></button>
+                <% } %>
+                
+            </div>
+        </div>
+    </div>
+</header>

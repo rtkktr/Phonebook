@@ -1,0 +1,38 @@
+<div class="container mt-4">
+    <div class="row">
+        <!-- User Profile Card - Take 3 columns on the left -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User Profile</h5>
+                    <p class="card-text"><strong>Full Name:</strong> <%= userModel.fullname %></p>
+                    <p class="card-text"><strong>Email:</strong> <%= userModel.email %></p>
+                    <p class="card-text"><strong>Username:</strong> <%= userModel.username %></p>
+                    <p class="card-text"><strong>Password:</strong> ********</p>
+                    <!-- You can customize the cover display as needed -->
+                    <img src="<%= userModel.coverImagePath %>" alt="Cover Image" class="img-fluid mt-3">
+                    <button type="button" class="btn btn-primary mt-3">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Book Display Section - Take 9 columns on the right -->
+        <div class="col-md-9">
+            <h2 class="text-center mb-4">My Books</h2>
+            <div class="row">
+                <% books.forEach(book => { %>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <img src="<%= book.coverImagePath %>" class="card-img-top" alt="<%= book.title %>">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= book.title %></h5>
+                                <p class="card-text"><%= book.description %></p>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+        
+    </div>
+</div>
